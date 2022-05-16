@@ -34,7 +34,7 @@ _Provide some specific tests with values that you can imagine `assert`ing_
 
 ## References
 
-Morgan, W., Tom, Chetan Nathwani, Nicolas Piette Lauziere, Martin, B., Alessandro, G., Louise, S., and RichardScottOz, 2021, morganjwilliams/pyrolite: 0.3.1.  
+Morgan, W., Tom, ChetanNathwani, NicolasPietteLauziere, Martin, B., Alessandro, G., Louise, S., and RichardScottOz, 2021, morganjwilliams/pyrolite: 0.3.1.  
 O’Neill, H. S. C., 2016, The Smoothness and Shapes of Chondrite-normalized Rare Earth Element Patterns in Basalts: Journal of Petrology, v. 57, no. 8, p. 1463-1508.  
 Sambridge, M., Bodin, T., Gallagher, K., and Tkalcic, H., 2013, Transdimensional inference in the geosciences: Philos Trans A Math Phys Eng Sci, v. 371, no. 1984, p. 20110547.  
 
