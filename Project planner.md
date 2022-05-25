@@ -26,9 +26,11 @@ I estimate it will take a week to create these functions, and another week to de
 
 ## Testing, validation, documentation
 
-**Note:** You need to think about how you will know your code is correct and achieves the goals that are set out above (specific tests that can be implemented automatically using, for example, the `assert` statement in python.)  It can be really helpful if those tests are also part of the documentation so that when you tell people how to do something with the code, the example you give is specifically targetted by some test code.
+I'm a little unsure at this stage how I am going to test this.
+I can test the generalised functions which create lambda coefficients against the conventional method of calculating lambdas to 4th degree.
+Will have to think about how to test whether my probablilities are real.
 
-_Provide some specific tests with values that you can imagine `assert`ing_
+
 
   
 
