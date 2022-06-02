@@ -3,7 +3,7 @@
 import numpy as np
 import math
 from scipy.optimize import curve_fit
-
+import pandas as pd
 import sympy
 
 test_data = (1.447,5.241,1.014,5.722,2.277,1.005,3.285,0.646,4.336,0.906,2.715,0.412,2.501,0.351)
@@ -123,7 +123,7 @@ def get_orthogonal_polynomial_constants(xs, degree=3, rounding=None, tol=10 ** -
     
     from orthogonal_polynomial_constants:
     ----------
-    Finds the parameters
+    Finds the parameters=
     :math:`(\beta_0), (\gamma_0, \gamma_1), (\delta_0, \delta_1, \delta_2)` etc.
     for constructing orthogonal polynomial functions `f(x)` over a fixed set of values
     of independent variable `x`.

@@ -3,7 +3,7 @@
 import numpy as np
 import math
 from scipy.optimize import curve_fit
-
+import pandas as pd
 import sympy
 
 test_data = (1.447,5.241,1.014,5.722,2.277,1.005,3.285,0.646,4.336,0.906,2.715,0.412,2.501,0.351)
