@@ -121,6 +121,55 @@ def get_orthogonal_polynomial_constants(xs, degree=3, rounding=None, tol=10 ** -
     r"""
     This retrieves saved orthogonal polynomial constants if they have already been calculated, or calculates them if they have not been calculated.
     
+    from orthogonal_polynomial_constants:
+    ----------
+    Finds the parameters=
+    :math:`(\beta_0), (\gamma_0, \gamma_1), (\delta_0, \delta_1, \delta_2)` etc.
+    for constructing orthogonal polynomial functions `f(x)` over a fixed set of values
+    of independent variable `x`.
+    Used for obtaining lambda values for dimensional reduction of REE data [#ref_1]_.
+
+    Parameters
+    ----------
+    xs : :class:`numpy.ndarray`
+        Indexes over which to generate the orthogonal polynomials.
+    degree : :class:`int`
+        Maximum polynomial degree. E.g. 3 will generate constant, linear, and quadratic
+        polynomial components.
+    tol : :class:`float`
+        Convergence tolerance for solver.
+    rounding : :class:`int`
+        Precision for the orthogonal polynomial coefficents.
+
+    Returns
+    -------
+    :class:`list`
+        List of tuples corresponding to coefficients for each of the polynomial
+        components. I.e the first tuple will be empty, the second will contain a single
+        coefficient etc.
+
+    Notes
+    -----
+        Parameters are used to construct orthogonal polymomials of the general form:
+
+        .. math::
+
+            f(x) &= a_0 \\
+            &+ a_1 * (x - \beta) \\
+            &+ a_2 * (x - \gamma_0) * (x - \gamma_1) \\
+            &+ a_3 * (x - \delta_0) * (x - \delta_1) * (x - \delta_2) \\
+
+    See Also
+    --------
+    :func:`~pyrolite.util.lambdas.calc_lambdas`
+    :func:`~pyrolite.geochem.transform.lambda_lnREE`
+
+    References
+    ----------
+    .. [#ref_1] O’Neill HSC (2016) The Smoothness and Shapes of Chondrite-normalized
+           Rare Earth Element Patterns in Basalts. J Petrology 57:1463–1508.
+           doi: `10.1093/petrology/egw047 <https://dx.doi.org/10.1093/petrology/egw047>`__
+    
     """
     
     #save a unique string for the given inputs
@@ -143,14 +192,12 @@ def lambdas_to_data(lambdas,x_data,x_fit = radii):
     
     Parameters
     ----------
-    
     lambdas <- this is a list or tuple of orthogonal polynomial coefficients
     x_data <- this is a list of the points at which to return fitted data 
     x_fit <- this is a list of the points at which to construct orthogonal polynomials
     
     Returns
-    ----------
-    
+    ---------- 
     A list of modelled data at points "x_data" fitted to orthogonal polynomials where "lambdas" are the coefficients
     and the polynomials are orthogonal at "x_fit".
     """
@@ -184,7 +231,6 @@ def fit_lambdas(y_fit,x_data = radii, x_fit = radii, N = 3, std_dev = 2):
     
     Parameters
     ----------
-    
     y_fit <- a list of data to fit orthogonal polynomials to.
     x_data <- a list of data for the x locations of y_fit
     x_fit <- a list of data to construct orthogonal polynomials with respect to
@@ -192,8 +238,7 @@ def fit_lambdas(y_fit,x_data = radii, x_fit = radii, N = 3, std_dev = 2):
     std_dev <- mean instrumental error for y_fit in %
     
     Returns
-    ----------
-    
+    ----------  
     (lambdas, covariance matrix, reduced chi squared)
     lambdas are the fitted orthogonal polynomial coefficients
     covariance matrix is the covariance of the fitted lambdas (ideally a diagonal NxN matrix)
@@ -257,13 +302,11 @@ def probability_of_lambdas(cov_matrix, chi_sq):
     
     Parameters
     ----------
-    
     cov_matrix <- a square array of covariances
     chi_sq <- chi squared statistic for the data that the covariance matrix was calculated from
     
     Returns
-    ----------
-    
+    ----------  
     A float of relative probability. This is self-relative and should be normalised to itself in deciding which model is the most likely.
     
     """
