@@ -47,7 +47,7 @@ def orthogonal_polynomial_constants(xs, degree=3, rounding=None, tol=10 ** -15):
     xs : :class:`numpy.ndarray`
         Indexes over which to generate the orthogonal polynomials.
     degree : :class:`int`
-        Maximum polynomial degree. E.g. 2 will generate constant, linear, and quadratic
+        Maximum polynomial degree. E.g. 3 will generate constant, linear, and quadratic
         polynomial components.
     tol : :class:`float`
         Convergence tolerance for solver.
@@ -137,9 +137,6 @@ def get_orthogonal_polynomial_constants(xs, degree=3, rounding=None, tol=10 ** -
         return(new_constants)
     
     
-    
-
-
 def lambdas_to_data(lambdas,x_data,x_fit = radii):
     r"""
     Fits N coefficients ("lambdas") of polynomials which are orthogonal at points x_fit to the data y_fit.
@@ -255,6 +252,22 @@ def fit_lambdas(y_fit,x_data = radii, x_fit = radii, N = 3, std_dev = 2):
     
     
 def probability_of_lambdas(cov_matrix, chi_sq):
+    r"""
+    Calculates the probability of the model given the data from a covariance matrix and a reduced chi_squared statistic
+    
+    Parameters
+    ----------
+    
+    cov_matrix <- a square array of covariances
+    chi_sq <- chi squared statistic for the data that the covariance matrix was calculated from
+    
+    Returns
+    ----------
+    
+    A float of relative probability. This is self-relative and should be normalised to itself in deciding which model is the most likely.
+    
+    """
+    
     
     N = len(cov_matrix)
     
@@ -268,8 +281,25 @@ def probability_of_lambdas(cov_matrix, chi_sq):
 #------ From here functions are only applicable to rare earth element patterns
 
 
-
 def best_fit_anomaly(ree, N, std_dev=2):
+    r"""
+    This function decides what anomaly (Eu,Ce, both, or none) fits the data best for a rare earth element (REE) pattern based on minimising the reduced chi squared statistic.
+    
+    Parameters
+    ----------
+    ree <- this should be a length 14 iterable in order of the REE, with missing data set to None. REE should be of the form ln(REE/REE-CI) where REE-CI is the REE contents in CI-chondrite.
+    N <- number of orthogonal polynomials to fit to.
+    std_dev <- the mean instrumental error of the data in %.
+    
+    Returns
+    ----------
+    lambdas, covariance matrix, reduced chi squared, anomaly
+    
+    lambdas are coefficients to N orthogonal polynomials to fit the data
+    covariance matrix is the covariance of those lambdas
+    reduced chi squared is the reduced chi squared statistic for lambdas 
+    anomaly is one of 0,1,2,3. 0 means no anomaly was fitted. 1 means Eu anomaly fitted. 2 means Ce anomaly fitted. 3 means Eu and Ce anomaly fitted.
+    """
     
     #find locations of Nones
     #make filters for possible anomalies
@@ -309,17 +339,37 @@ def best_fit_anomaly(ree, N, std_dev=2):
 
     
 def probability_of_N_lambdas(ree, min_N, max_N, std_dev = 2):
+    r"""
+    Calculates the self-relative probabilities for fitting N lambdas to rare earth element (REE) data. N iterates from min_N to max_N.
+    
+    Parameters
+    ----------
+    ree <- iterable of 14 REE with missing data set to None
+    min_N <- minimum orthogonal polynomial degree to calculate
+    max_N <- maximum orthogonal polynomial degree to calculate
+    std_dev <- instrumental error standard deviation in %.
+    
+    Returns
+    ----------
+    (probabilities),(N)
+    
+    probabilities is a tuple of self-relative probabilities relating to N polynomials fitted to data. N is a tuple of which degree polynomial each probability relates to.
+    """
     
     probabilities = [None] * (max_N-min_N+1)
-    print(probabilities)
+    
     for N in range(min_N, max_N+1):
         
         lambdas = best_fit_anomaly(ree, N = N, std_dev = std_dev)
         
-        print(N-min_N)
         probabilities[N-min_N] = probability_of_lambdas(lambdas[1],lambdas[2])
     
-    return(tuple(probabilities), tuple([i for i in range(min_N, max_N+1)]))
+    #normalise to self
+    probabilities_sum = sum(probabilities)
+    
+    relative_probabilities = [i/probabilities_sum for i in probabilitites]
+    
+    return(tuple(relative_probabilities), tuple([i for i in range(min_N, max_N+1)]))
     
     
     
