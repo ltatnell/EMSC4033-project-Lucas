@@ -33,17 +33,29 @@ Each line in the Code demo has a markdown line describing what the code is doing
 For use of the functions provided here, one can download the Make_lambdas.py file from Code/src/python and import them into another program.
 The doc-strings in the functions provide information on how each function should be used.
 
+**Dependancies**
+
+This code requires the following packages to be installed:
+-numpy
+-math
+-scipy
+-pandas
+-sympy
+-matplotlib
+
 **Testing**
 
-The code here calculates $\lambda$ coefficients for data in a generalised way for N $\lambdas$, where a user can choose N. This method for constructing $\lambda$s has,
-to the best of my knowledge, not been done before. Therefore, the results must be cross-checked with other methods for constructing $\lambdas$. 
+The code here calculates $\lambda$ coefficients for data in a generalised way for N $\lambda s$, where a user can choose N. This method for constructing $\lambda$ coefficients has,
+to the best of my knowledge, not been done before. Therefore, the results must be cross-checked with other methods for constructing $\lambda$ coefficients. 
 The programs AlambdaR and BlambdaR (https://earthsciences.anu.edu.au/research/software) do just this, so I cross check my results with those from these programs.
 
-Additionally, the $\lambda$s should be orthogonal, meaning they are independant of each other. If I have constructed them correctly, then they lower degree $\lambda$s 
+Additionally, the $\lambda$ coefficients should be orthogonal, meaning they are independant of each other. If I have constructed them correctly, then they lower degree $\lambda$s 
 should not change when higher degree ones are calculated. This is tested for.
 
 It is difficult to test the probability, as there is nothing to cross check to. I decided to just use it to make sure that generated REE patterns clearly show that
 they most likely are described by the number of lambdas they were generated from. 
+
+The test functions can be found in code/src/test_functions.py
 
 **Limitations**
 
