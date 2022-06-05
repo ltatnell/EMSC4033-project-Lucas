@@ -4,7 +4,7 @@ By Lucas Tatnell - u6079899
 This repository contains code to be used as a library for the following things;
 
 1. Fitting an arbitrary number of orthogonal polynomials to a given set of data
-2. Calculate probabilities for that fit, given the error in the data and the goodness of fit
+2. Calculating probabilities for that fit, given the error in the data and the goodness of fit
 
 Specifically, this code is catered towards the analysis of rare earth element (REE) patterns, and further contains code which can determine the most probable amount of orthogonal polynomials to describe data in a REE dataset.
 
