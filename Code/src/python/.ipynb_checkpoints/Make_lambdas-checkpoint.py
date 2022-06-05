@@ -241,6 +241,10 @@ def fit_lambdas(y_fit,x_data = radii, x_fit = radii, N = 3, std_dev = 2):
     chi squared is the goodness of fit
     """
     
+    #y_fit should be of the same length as x_data
+    if len(y_fit) != len(x_data):
+        raise ValueError("Length of y_fit not equal to length of x_data")
+    
     #get parameters for N lambdas
     parameters = get_orthogonal_polynomial_constants(x_fit, degree = N)
 
@@ -258,17 +262,17 @@ def fit_lambdas(y_fit,x_data = radii, x_fit = radii, N = 3, std_dev = 2):
         for i,lam in enumerate(lambdas):
             #calculate the contribution of that lambda
     
-            lam_prod = lam
+            lam_product = lam
             
             for parameter in parameters[i]:
             
-                lam_prod = lam_prod * (x - parameter)
+                lam_product = lam_product * (x - parameter)
 
             #sum the contribution of each lambdas
-            fit_sum += lam_prod
+            fit_sum += lam_product
 
         #for some reason, curve_fit doesnt like the output of this function unless it is coerced to this thing
-        return(np.array(fit_sum,dtype='float64'))
+        return(np.array(fit_sum, dtype='float64'))
     
     #initial guess at the lambdas. This is just here to force curve_fit to fit the correct amount of parameters.
     p0 = [1.0]+[0]*(N-1)
@@ -440,6 +444,7 @@ def dataset_probability(data, min_N, max_N, std_dev = 2):
         
         probabilities = probability_of_N_lambdas(ree_norm, min_N, max_N, std_dev)
         
+        #which one is most likely?
         max_index = probabilities[0].index(max(probabilities[0]))
         
         return((probabilities[0][max_index],probabilities[1][max_index]))

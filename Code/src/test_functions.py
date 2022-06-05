@@ -50,3 +50,16 @@ def test_fit_lambdas_different_N(tolerance = 0.00001):
     test = all(a<tolerance for a in test_difference)
     
     assert test, "lambdas differ too much. Difference between first 4 lambdas when calculating 4 lambdas vs 5 lambdas is {}".format(test_difference)
+    
+    
+def test_probability():
+    
+    #these data were constructed from 5 lambdas (lambda 0 to lambda 4)
+    test_data = [2.903,2.007,1.451,1.128,0.867,0.807,0.754,0.699,0.640,0.586,0.546,0.525,0.529,0.557]
+    
+    
+    test_probabilities = probability_of_N_lambdas(test_data, 1, 7, std_dev = 1)[0]
+    
+    max_index = test_probabilities.index(max(test_probabilities))
+    
+    assert max_index == 4, "Function is saying {} lambdas are mose probably fitting data constructed from 5 lambdas".format(max_index+1)
