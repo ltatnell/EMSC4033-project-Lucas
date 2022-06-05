@@ -9,7 +9,7 @@ and
 
   $$    f_N^{orth} = \prod_{j=1}^{N} x - \alpha_j  $$
 
-where $\alpha_j$ are chosen such that the inner product of $f_k^{orth}$ and $f_p^{orth}$ is 0 if $k \neq p$ for the given data. 
+for any $N$ where $\alpha_j$ are chosen such that the inner product of $f_k^{orth}$ and $f_p^{orth}$ is 0 if $k \neq p$ for the given data. 
 $\lambda$s are chosen to minimise $X^2$ for a given set of data.
 
 For rare earth element patterns, which are parameterised in terms of their ionic radii, the $\lambda_i$ coefficients describe the contributions of order i polynomials. 
