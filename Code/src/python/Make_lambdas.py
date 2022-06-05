@@ -2,10 +2,7 @@
 
 from .dependencies import *
 
-test_data = (1.447,5.241,1.014,5.722,2.277,1.005,3.285,0.646,4.336,0.906,2.715,0.412,2.501,0.351)
-
-test_data_2=(-3.086,-1.517,-0.532,0.180,1.428,2.107,2.894,3.769,4.686,5.506,6.166,6.626,6.868,6.901)
-
+#constants for REE analysis
 reenames  =  ("La","Ce","Pr",
               "Nd","Sm","Eu",
               "Gd","Tb","Dy",
@@ -25,8 +22,6 @@ CI_ree = (0.2472, 0.6308, 0.0950, # La Ce Pr
           0.2059, 0.0375, 0.2540, # Gd Tb Dy
           0.0554 ,0.1645, 0.0258, # Ho Er Tm
           0.1684, 0.0251) # Yb Lu
-
-test_data_norm = [math.log(a/b) for a,b in zip(test_data,CI_ree)]
 
 #this function is from the package pyrolite
 def orthogonal_polynomial_constants(xs, degree=3, rounding=None, tol=10 ** -15):
