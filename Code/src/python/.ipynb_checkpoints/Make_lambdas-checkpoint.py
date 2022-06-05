@@ -1,10 +1,6 @@
 # This code provides functions to construct orthogonal polynomials in terms of the ionic radii of the 14 rare earth elements (REE)
 
-import numpy as np
-import math
-from scipy.optimize import curve_fit
-import pandas as pd
-import sympy
+from .dependencies import *
 
 test_data = (1.447,5.241,1.014,5.722,2.277,1.005,3.285,0.646,4.336,0.906,2.715,0.412,2.501,0.351)
 
@@ -24,18 +20,19 @@ radii  =  (1.160, 1.143, 1.126,  # La Ce Pr
            0.985, 0.977) # Yb Lu
 
 #CI chondrite values from O'Neill 2016
-ON16 = (0.2472, 0.6308, 0.0950, # La Ce Pr
+CI_ree = (0.2472, 0.6308, 0.0950, # La Ce Pr
           0.4793, 0.1542, 0.0592, # Nd Sm Eu
           0.2059, 0.0375, 0.2540, # Gd Tb Dy
           0.0554 ,0.1645, 0.0258, # Ho Er Tm
           0.1684, 0.0251) # Yb Lu
 
-test_data_norm = [math.log(a/b) for a,b in zip(test_data,ON16)]
+test_data_norm = [math.log(a/b) for a,b in zip(test_data,CI_ree)]
 
 #this function is from the package pyrolite
-#dont know how to install packages on here
 def orthogonal_polynomial_constants(xs, degree=3, rounding=None, tol=10 ** -15):
     r"""
+    Adapted from the package pyrolite.
+    
     Finds the parameters
     :math:`(\beta_0), (\gamma_0, \gamma_1), (\delta_0, \delta_1, \delta_2)` etc.
     for constructing orthogonal polynomial functions `f(x)` over a fixed set of values
@@ -119,7 +116,7 @@ saved_orthogonal_polynomial_constants = {}
 
 def get_orthogonal_polynomial_constants(xs, degree=3, rounding=None, tol=10 ** -15):
     r"""
-    This retrieves saved orthogonal polynomial constants if they have already been calculated, or calculates them if they have not been calculated.
+    This retrieves saved orthogonal polynomial constants if they have already been calculated, or calculates them if they have not been calculated. They can take a while to calculate for high degrees so better to just save them and retrieve when needed.
     
     from orthogonal_polynomial_constants:
     ----------
@@ -179,8 +176,7 @@ def get_orthogonal_polynomial_constants(xs, degree=3, rounding=None, tol=10 ** -
     if save_str_name in saved_orthogonal_polynomial_constants:
         return saved_orthogonal_polynomial_constants[save_str_name]
     
-    else:
-        
+    else:      
         new_constants = orthogonal_polynomial_constants(xs, degree=degree, rounding=rounding, tol=tol)
         saved_orthogonal_polynomial_constants[save_str_name] = new_constants
         return(new_constants)
@@ -282,7 +278,7 @@ def fit_lambdas(y_fit,x_data = radii, x_fit = radii, N = 3, std_dev = 2):
     
     lambdas = fit[0]
     
-    #calculate goodness of fit chi squared statistic
+    #calculate chi squared statistic
     fit_data = lambdas_to_data(lambdas,x_data,x_fit)
     
     residuals = [a - b for a,b in zip(fit_data,y_fit)]
@@ -307,10 +303,8 @@ def probability_of_lambdas(cov_matrix, chi_sq):
     
     Returns
     ----------  
-    A float of relative probability. This is self-relative and should be normalised to itself in deciding which model is the most likely.
-    
+    A float of self-relative probability.
     """
-    
     
     N = len(cov_matrix)
     
@@ -344,9 +338,9 @@ def best_fit_anomaly(ree, N, std_dev=2):
     anomaly is one of 0,1,2,3. 0 means no anomaly was fitted. 1 means Eu anomaly fitted. 2 means Ce anomaly fitted. 3 means Eu and Ce anomaly fitted.
     """
     
-    #find locations of Nones
+    #find locations of 'None's
     #make filters for possible anomalies
-    none_indexes = {i for i,v in enumerate(ree) if v == None}
+    none_indexes = {i for i,v in enumerate(ree) if pd.isnull(v)}
     
     filt_Eu = none_indexes | {5}
     filt_Ce = none_indexes | {1}
@@ -387,7 +381,7 @@ def probability_of_N_lambdas(ree, min_N, max_N, std_dev = 2):
     
     Parameters
     ----------
-    ree <- iterable of 14 REE with missing data set to None
+    ree <- iterable of all 14 REE with missing data set to null values. Should be normalised to ln(REE/REE-CI) where REE-CI is the REE contents of CI-chondrite
     min_N <- minimum orthogonal polynomial degree to calculate
     max_N <- maximum orthogonal polynomial degree to calculate
     std_dev <- instrumental error standard deviation in %.
@@ -410,12 +404,50 @@ def probability_of_N_lambdas(ree, min_N, max_N, std_dev = 2):
     #normalise to self
     probabilities_sum = sum(probabilities)
     
-    relative_probabilities = [i/probabilities_sum for i in probabilitites]
+    relative_probabilities = [i/probabilities_sum for i in probabilities]
     
     return(tuple(relative_probabilities), tuple([i for i in range(min_N, max_N+1)]))
     
+   
     
     
+def dataset_probability(data, min_N, max_N, std_dev = 2):
+    r"""
+    Calculates highest probability of N lambdas fitted to each row of data. Data is a DataFrame with 14 columns for each rare earth element (REE). Lambas are checked between degree min_N and max_N.
+    
+    Parameters
+    ----------
+    data <- a pandas.DataFrame with 14 columns, one for each REE. REE should be in ppm.
+    min_N <- minimum orthogonal polynomial degree to calculate
+    max_N <- maximum orthogonal polynomial degree to calculate
+    std_dev <- instrumental error standard deviation in %.
+    
+    Returns
+    ----------
+    a pandas.DataFrame with 2 columns. First column is probability of N lambdas. Second column is the N which returned the highest probability.
+    """
+    
+    #make a function to iterate over each ree pattern
+    def max_probability(ree): 
+        
+        #check if we have enough REE data to fit N polynomials to
+        #-2 because we try fitting Eu and Ce anomaly
+        if ree.isnull().sum() > 14 - 2 - 2 - max_N:
+
+            return (0),(0)
+        
+        ree_norm = [math.log(a/b) for a,b in zip(ree,CI_ree)]
+        
+        probabilities = probability_of_N_lambdas(ree_norm, min_N, max_N, std_dev)
+        
+        max_index = probabilities[0].index(max(probabilities[0]))
+        
+        return((probabilities[0][max_index],probabilities[1][max_index]))
+        
+    
+    return data.apply(max_probability,1,result_type='expand')
+
+
     
 
 
