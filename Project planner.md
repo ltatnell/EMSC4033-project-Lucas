@@ -26,13 +26,11 @@ I estimate it will take a week to create these functions, and another week to de
 
 ## Testing, validation, documentation
 
-I'm a little unsure at this stage how I am going to test this.
-I can test the generalised functions which create lambda coefficients against the conventional method of calculating lambdas to 4th degree.
-Will have to think about how to test whether my probablilities are real.
+The programs AlambdaR and BlambdaR (https://earthsciences.anu.edu.au/research/software) provide REE patterns with lambda parameterisations. I will cross check my lambdas with lambdas from these programs to check that my code correctly parameterises REE patterns.
 
+The lambdas should also be (mostly) independant. So for a REE pattern lambda[i] should be independant of lambda[j] if i=/=j. This is something i can test for as well.
 
-
-  
+I will test probabilities by checking that the most probable lambda for generated REE patterns is the number of lambdas that pattern was generated with.  
 
 ## References
 
