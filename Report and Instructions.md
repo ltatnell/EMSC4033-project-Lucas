@@ -7,10 +7,12 @@ $$ data(x) = \lambda_0 + \lambda_1 f_1^{orth} + \lambda_2 f_2^{orth} + \lambda_3
 
 and
 
-  $$    f_N^{orth} = \prod_{j=1}^{N} x - \alpha_j  $$
+  $$  f_0^{orth} = 1 $$
 
-for any $N$ where $\alpha_j$ are chosen such that the inner product of $f_k^{orth}$ and $f_p^{orth}$ is 0 if $k \neq p$ for the given data. 
-$\lambda$s are chosen to minimise $X^2$ for a given set of data.
+  $$    f_N^{orth} = \prod_{j=1}^{N \ge 1} x - \alpha_j  $$
+
+for any $N \ge 0$ where $\alpha_j$ are chosen such that the inner product of $f_k^{orth}$ and $f_p^{orth}$ is 0 if $k \neq p$ for the given data. 
+$\lambda$  coefficients are chosen to minimise $X^2$ for a given set of data.
 
 For rare earth element patterns, which are parameterised in terms of their ionic radii, the $\lambda_i$ coefficients describe the contributions of order i polynomials. 
 These are useful for geochemical inferences, however it is often difficult to determine how many $\lambda$s are appropriate to describe a pattern, 
