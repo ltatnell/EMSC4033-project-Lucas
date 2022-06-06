@@ -412,7 +412,10 @@ def probability_of_N_lambdas(ree, min_N, max_N, std_dev = 2):
     
 def dataset_probability(data, min_N, max_N, std_dev = 2):
     r"""
-    Calculates highest probability of N lambdas fitted to each row of data. Data is a DataFrame with 14 columns for each rare earth element (REE). Lambas are checked between degree min_N and max_N.
+    Calculates highest probability of N lambdas fitted to each row of data. Data is a DataFrame with 14 columns for each rare earth element (REE). 
+    Lambas are checked between degree min_N and max_N.
+    
+    Rows with more null values than 10 - max_N return (0),(0), as max_N lambdas cannot be fitted to these data.
     
     Parameters
     ----------
@@ -429,6 +432,7 @@ def dataset_probability(data, min_N, max_N, std_dev = 2):
     #make a function to iterate over each ree pattern
     def max_probability(ree): 
         
+        #exception handling
         #check if we have enough REE data to fit N polynomials to
         #-2 because we try fitting Eu and Ce anomaly
         if ree.isnull().sum() > 14 - 2 - 2 - max_N:
