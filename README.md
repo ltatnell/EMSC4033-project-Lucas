@@ -12,7 +12,7 @@ Instructions on how to use the code are in Report and Instructions.md. A demonst
 
 ## What does the code do?
 
-Orthogonal polynomial fit to data allows quantification of the contribution of increasing order orthogonal polynomials to data. Polynomials are of the form;
+Orthogonal polynomial fit to data allows quantification of the contribution of increasing order polynomials to data. Polynomials are of the form;
 
 $$ data(x) = \lambda_0 + \lambda_1 f_1^{orth} + \lambda_2 f_2^{orth} + \lambda_3 f_3^{orth} + ... $$
 
