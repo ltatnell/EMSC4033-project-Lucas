@@ -29,7 +29,7 @@ This mini-package allows the calculation of the realtive probability of fit for 
 
 $$ p(d|m)  \propto  {{1} \over {[(2\pi)^N*|C_{\lambda s}|]^{1/2}}  } exp(-{1\over2} * \phi(m))$$ 
 
-where $d$ is the data, $m$ is the model, $N$ is the number of $\lambda$ fitted to data, $C_{\lambda s}$ is the covariance matrix of the lambdas, and $\phi(m)$ is the error in the data ($X^2$ statistic).
+where $d$ is the data, $m$ is the model, $N$ is the number of $\lambda$ fitted to data, $C_{\lambda s}$ is the covariance matrix of the lambdas, and $\phi(m)$ is the error in the data ($X^2$ statistic). This is from Sambridge et al. (2013).
 Here, the relative probability calculated is proportional to the true probability, so can be used to find the most likely model, or N.
 
 
@@ -53,3 +53,6 @@ dataset_probability() runs probability_of_all_lambdas() over a pandas.DataFrame 
 
 A number of other functions are provided, which are used to code these three functions. Using these functions, one can decide quantitatively hoe many lambda coefficients should be used to analyse data with.
 
+# References
+
+Sambridge, M., Bodin, T., Gallagher, K., and Tkalcic, H., 2013, Transdimensional inference in the geosciences: Philos Trans A Math Phys Eng Sci, v. 371, no. 1984, p. 20110547.
