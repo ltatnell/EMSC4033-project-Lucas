@@ -22,7 +22,7 @@ and
   
   $$    f_N^{orth} = \prod_{j=1}^{N\ge 1} x - {\alpha_N}_{j}  $$
 
-for any $N \ge 0$ where ${\alpha_N}_{j}$ are chosen such that the inner product of $f_k^{orth}$ and $f_p^{orth}$ is 0 if $k \neq p$ for the given data. 
+for any $N \ge 0$ where ${\alpha_N}_{j}$ are chosen such that the inner product of $f_k^{orth}$ and $f_p^{orth}$ is 0 if $k \neq p$ for the given $x$. 
 $\lambda$ coefficients are chosen to minimise $X^2$ for a given set of data.
 
 This mini-package allows the calculation of the realtive probability of fit for N orthogonal polynomails given the error in the data. This can be used to decide how many polynomials to fit. Relative probabilities are calculated using: 
